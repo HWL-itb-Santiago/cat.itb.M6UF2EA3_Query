@@ -87,6 +87,7 @@ namespace cat.itb.M6UF2EA3.CRUD
                     IQuery query = session.CreateQuery("SELECT d.Ofici, d.Apellido, d.Salario FROM Empleado d WHERE d.Apellido LIKE :apellido");
                     query.SetParameter("apellido", lastName + "%");
                     empleados = query.List<object[]>();
+                    session.Close();
                 }
                 return empleados;
             }
@@ -94,7 +95,77 @@ namespace cat.itb.M6UF2EA3.CRUD
             {
                 Console.WriteLine($"Error al extraer los datos: {ex.Message}");
                 return null;
-                throw;
+            }
+        }
+
+        public IList<object[]>? SelectByMaxSalari()
+        {
+            try
+            {
+                IList<object[]> empleados;
+                using (var session = SessionFactoryCloud.Open())
+                {
+                    QueryOver<Empleado> maxSalari = QueryOver.Of<Empleado>()
+                        .SelectList(c => c.SelectMax(d => d.Salario));
+
+                    empleados = session.QueryOver<Empleado>()
+                        .WithSubquery.Where(c => c.Salario == maxSalari.As<double>())
+                        .Select(c => c.Apellido, c => c.Ofici, c => c.Salario)
+                        .List<object[]>();
+                    session.Close();
+                }
+                return empleados;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error al extraer los datos");
+                return null;
+            }
+        }
+        public IList<object[]> SelectByOficiAndSalariQueryOver(string ofici, double salari)
+        {
+            try
+            {
+                IList<object[]> empleados;
+                using (var session = SessionFactoryCloud.Open())
+                {
+                    empleados = session.QueryOver<Empleado>()
+                        .WhereRestrictionOn(c => c.Ofici).IsInsensitiveLike(ofici)
+                        .And(c => c.Salario > salari)
+                        .Select(c => c.Apellido, c => c.Salario)
+                        .List<object[]>();
+                    session.Close();
+                }
+                return empleados;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error al extraer los datos");
+                return new List<object[]>();
+            }
+        }
+        public IList<string>? SelectBySalariRangeQueryOver(double sal1, double sal2)
+        {
+            try
+            {
+                double max = Math.Max(sal1, sal2);
+                double min = Math.Min(sal1, sal2);
+                IList<string> empleados;
+                using (var session = SessionFactoryCloud.Open())
+                {
+                    empleados = session.QueryOver<Empleado>()
+                        .WhereRestrictionOn(c => c.Salario).IsBetween(min).And(max)
+                        .Select(c => c.Apellido)
+                        .OrderBy(c => c.Apellido).Asc
+                        .List<string>();
+                    session.Close();
+                }
+                return empleados;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error al extraer los datos");
+                return null;
             }
         }
         public IList<Empleado>? SelectByOficiQueryOver(string depname)

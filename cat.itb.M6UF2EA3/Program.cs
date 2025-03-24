@@ -1,5 +1,6 @@
 ﻿using cat.itb.M6UF2EA3.CRUD;
 using cat.itb.M6UF2EA3.Models;
+using System.Runtime.Intrinsics.Arm;
 
 class Program
 {
@@ -67,17 +68,9 @@ class Program
             Deptno = d3,
         };
 
-        //var listdeps = departamentosCRUD.SelectAllHQL();
-        //foreach (var dep in listdeps)
-        //{
-        //    Console.WriteLine(dep.Dnombre);
-        //}
 
-        //var listemps = empleadosCRUD.SelectAllCriteria();
-        //foreach (var emp in listemps)
-        //{
-        //    Console.WriteLine(emp.Apellido);
-        //}
+
+
 
         //var listSalariEmps = empleadosCRUD.SelectBySalariRangeCriteria(2000);
         //foreach (var emp in listSalariEmps)
@@ -107,160 +100,142 @@ class Program
         //    Console.WriteLine($"{item.Apellido, -8} {item.Salario, -10}");
         //}
 
-        var empFilterHQL = empleadosCRUD.SelectByLastNameHQL("S");
-        foreach (var emp in empFilterHQL)
-        {
-            Console.WriteLine($"Oficio: {emp[0]}, Apellido: {emp[1]}, Salario: {emp[2]}");
-        }
-
-        var depsLoc = departamentosCRUD.SelectByLocQueryOver("Sevilla", "Barcelona");
-        foreach (var dep in depsLoc)
-            { Console.WriteLine(dep.Dnombre); }
-        //int option = 0;
-        //while (option != -1)
+        //var empFilterHQL = empleadosCRUD.SelectByLastNameHQL("S");
+        //foreach (var emp in empFilterHQL)
         //{
-        //    Console.Clear();
-        //    Console.WriteLine("----------------------- MENU DE BASE DE DATOS ----------------------");
-        //    Console.WriteLine("1.-  Inserta tres nous departaments a la taula DEPARTAMENTOS");
-        //    Console.WriteLine("2.-  Inserta un nou empleat a cada departament nou");
-        //    Console.WriteLine("3.-  Actualitza el nom del departament número 3, ara es dirà MARKETING.");
-        //    Console.WriteLine("4.-  Actualitza el salari de l’empleat amb empno = 7839, ara cobra 5500.");
-        //    Console.WriteLine("5.-  Elimina l’empleat que es diu NEGRO.");
-        //    Console.WriteLine("6.-  Mostra per pantalla el cognom i el salari dels empleats que cobrin menys de 2500.");
-        //    Console.WriteLine("7.-  Mostra el nom i la ciutat del department de l’empleat amb id = 8.");
-        //    Console.WriteLine("8.-  Mostra el cognom, l’ofici i el salari de tots els empleats del departament amb id = 3.");
-        //    Console.WriteLine("R -  Restaura");
-        //    //Console.WriteLine("0 - Create Tables");
-        //    Console.WriteLine("Ingrese la opcion a desear: ");
-        //    // Correct input reading
-        //    string? input = Console.ReadLine();
-        //    if (input == "r" || input == "R")
-        //    {
-        //        Console.Clear();
-        //        generalCRUD.DeleteTables(["empleados", "departamentos"]);
-        //        generalCRUD.CreateTables();
-        //        Console.ReadLine();
-        //        continue;
-        //    }
-        //    else if (!int.TryParse(input, out option))
-        //    {
-        //        Console.WriteLine("Por favor ingrese una opción válida.");
-        //        continue;
-        //    }
-        //    switch (option)
-        //    {
-        //        case 1:
-        //            {
-        //                Console.Clear();
-        //                departamentosCRUD.Insert([d1, d2, d3]);
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 2:
-        //            {
-        //                Console.Clear();
-        //                empleadosCRUD.Insert([e1, e2, e3]);
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 3:
-        //            {
-        //                Console.Clear();
-        //                var subject = departamentosCRUD.SelectByID(3);
-        //                if (subject != null)
-        //                {
-        //                    subject.Dnombre = "MARKETING";
-        //                    departamentosCRUD.Update(subject);
-        //                }
-        //                else
-        //                    Console.WriteLine("Departamento no encontrado");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 4:
-        //            {
-        //                Console.Clear();
-        //                var subject2 = empleadosCRUD.SelectByEmpno(7839);
-        //                if (subject2.Count > 0)
-        //                {
-        //                    var emp = subject2.First();
-        //                    emp.Salario = 5500;
-        //                    empleadosCRUD.Update(emp);
-        //                }
-        //                else
-        //                    Console.WriteLine("Empleado no encontrado");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 5:
-        //            {
-        //                Console.Clear();
-        //                var subject3 = empleadosCRUD.SelectByName("NEGRO");
-        //                if (subject3.Count > 0)
-        //                {
-        //                    var emp = subject3.First();
-        //                    empleadosCRUD.Delete(emp);
-        //                }
-        //                else
-        //                    Console.WriteLine("Empleado no encontrado, no existe");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 6:
-        //            {
-        //                Console.Clear();
-        //                var subject4 = empleadosCRUD.SelectAll();
-        //                if (subject4.Count > 0)
-        //                {
-        //                    string apellidos = "APELLIDOS";
-        //                    string salario = "SALARIO";
-        //                    Console.WriteLine($"{apellidos,-15} {salario,-5}");
-        //                    foreach (var emp in subject4)
-        //                    {
-        //                        if (emp.Salario >= 2500)
-        //                            continue;
-        //                        Console.WriteLine($"{emp.Apellido,-15} {emp.Salario,-5}");
-        //                    }
-        //                }
-        //                else Console.WriteLine("No se existen empleados en la base de datos");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 7:
-        //            {
-        //                Console.Clear();
-        //                var subject5 = empleadosCRUD.SelectByID(8);
-        //                if (subject5 != null)
-        //                    Console.WriteLine($"{subject5.Deptno.Loc,-10} {subject5.Deptno.Dnombre}");
-        //                else Console.WriteLine("EL empleado no existe");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 8:
-        //            {
-        //                Console.Clear();
-        //                var subject6 = empleadosCRUD.SelectAll();
-        //                if (subject6.Count > 0)
-        //                {
-        //                    foreach (var emp in subject6)
-        //                    {
-        //                        if (emp.Deptno.Id != 3)
-        //                            continue;
-        //                        Console.WriteLine($"{emp.Apellido,-8} {emp.Salario,-8} {emp.Ofici,-8}");
-        //                    }
-        //                }
-        //                else
-        //                    Console.WriteLine("La consulta no arrojó resultados");
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //        case 0:
-        //            {
-        //                Console.Clear();
-        //                Console.ReadLine();
-        //                break;
-        //            }
-        //    }
+        //    Console.WriteLine($"Oficio: {emp[0]}, Apellido: {emp[1]}, Salario: {emp[2]}");
         //}
+
+        //var depsLoc = departamentosCRUD.SelectByLocQueryOver("Sevilla", "Barcelona");
+        //foreach (var dep in depsLoc)
+        //    { Console.WriteLine(dep.Dnombre); }
+
+        //var orderEmps = empleadosCRUD.SelectBySalariRangeQueryOver(3500, 2000);
+        //foreach (var emp in orderEmps)
+        //{
+        //    Console.WriteLine($"{emp,-5}");
+        //}
+
+        //var empsalari1400 = empleadosCRUD.SelectByOficiAndSalariQueryOver("EMPLEADO", 1400);
+        //foreach (var emp in empsalari1400)
+        //    Console.WriteLine(emp[0]);
+
+        //var emp = empleadosCRUD.SelectByMaxSalari();
+        //foreach (var empleado in emp)
+        //    Console.WriteLine($"{empleado[0], -10} {empleado[1], -10} {empleado[2], -10}");
+
+
+        int option = 0;
+        while (option != -1)
+        {
+            Console.Clear();
+            Console.WriteLine("----------------------- MENU DE BASE DE DATOS ----------------------");
+            Console.WriteLine("0.-  Mostra les dades de tots els departaments utiltzant HQL.");
+            Console.WriteLine("1.-  Mostra les dades de tots els empleats utiltzant Criteria.");
+            Console.WriteLine("2.-  Mostra per pantalla el cognom i el salari dels empleats que cobrin més de 2000 utilitzant Criteria.");
+            Console.WriteLine("3.-  Mostra la localització del departament de VENTAS utiltzant HQL.");
+            Console.WriteLine("4.-  Mostra les dades dels empleats que el seu ofici sigui VENDEDOR i els ordenes per salari de forma descendent utilitzant \r\n\tQueryOver.");
+            Console.WriteLine("5.-  Mostra el cognom, l’ofici i el salari de tots els empleats que el seu cognom comenci per «S» utilitzant HQL.");
+            Console.WriteLine("6.-  Mostra les dades dels departaments que estigui a SEVILLA o a BARCELONA utilitzant QueryOver.");
+            Console.WriteLine("7.-  Mostra npmés els cognoms dels empleats que el seu salari estigui entre 2000 i 3500, els ordenes de foma\r\n\tascendent per cognom i fes la projecció del cognom utilitzant QueryOver.");
+            Console.WriteLine("8.-  Mostra els cognoms i els salaris dels empleats que el seu ofici sigui EMPLEADO i cobrin més de 1400.\r\n\tutilitzant QueryOver.");
+            Console.WriteLine("9.-  Mostra el cognom, l’ofici i el salari de l’empleat que tingui el salari més alt utilitzant les Subqueries del\r\n\tQueryOver.");
+            Console.WriteLine("R -  Restaura");
+            //Console.WriteLine("0 - Create Tables");
+            Console.WriteLine("Ingrese la opcion a desear: ");
+            // Correct input reading
+            string? input = Console.ReadLine();
+            if (input == "r" || input == "R")
+            {
+                Console.Clear();
+                generalCRUD.DeleteTables(["empleados", "departamentos"]);
+                generalCRUD.CreateTables();
+                Console.ReadLine();
+                continue;
+            }
+            else if (!int.TryParse(input, out option))
+            {
+                Console.WriteLine("Por favor ingrese una opción válida.");
+                continue;
+            }
+            switch (option)
+            {
+                case 0:
+                    {
+                        Console.Clear();
+                        var listdeps = departamentosCRUD.SelectAllHQL();
+                        string depId = "ID";
+                        string depNombre = "DepNombre";
+                        string depLoc = "Loc";
+                        Console.WriteLine($"{depId,-10} {depNombre,-20} {depLoc,-10}");
+                        foreach (var dep in listdeps)
+                        {
+                            Console.WriteLine($"{dep.Id, -10} {dep.Dnombre, -20} {dep.Loc, -10}");
+                        }
+                        Console.ReadLine();
+                        break;
+                    }
+                case 1:
+                    {
+                        Console.Clear();
+                        var listemps = empleadosCRUD.SelectAllCriteria();
+                        foreach (var emp in listemps)
+                        {
+                            Console.WriteLine(emp.Apellido);
+                        }
+                        Console.ReadLine();
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 3:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 4:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 5:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 6:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 7:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+                case 8:
+                    {
+                        Console.Clear();
+
+                        Console.ReadLine();
+                        break;
+                    }
+            }
+        }
     }
 }
