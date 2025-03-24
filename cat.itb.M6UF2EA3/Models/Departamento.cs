@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.Models
 {
+    //Clase Departamento
+    //Necesaria para el mapeo con NHibernate
     public class Departamento
     {
         public virtual int Id { get; set; }

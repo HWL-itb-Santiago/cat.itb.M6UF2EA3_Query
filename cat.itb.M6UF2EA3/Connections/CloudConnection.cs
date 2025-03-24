@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.Connections
 {
+    //clase que crea la conexion con la base de datos y genera un metodo para abrir dicha conexion
     public class CloudConnection
     {
         public string Username = "santiagovr";

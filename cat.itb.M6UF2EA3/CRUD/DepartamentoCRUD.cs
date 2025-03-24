@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.CRUD
 {
+    //CRUD departamentos con Select, Insert, Update y Delete
     public class DepartamentosCRUD
     {
         public void Delete(Departamento departamento)
@@ -82,16 +83,16 @@ namespace cat.itb.M6UF2EA3.CRUD
                 throw;
             }
         }
-        public IList<Departamento>? SelectLocByNameHQL(string name)
+        public IList<string>? SelectLocByNameHQL(string name)
         {
             try
             {
-                IList<Departamento> deps;
+                IList<string> deps;
                 using (var session = SessionFactoryCloud.Open())
                 {
-                    IQuery query = session.CreateQuery("FROM Departamento d WHERE d.Dnombre = :name");
+                    IQuery query = session.CreateQuery("SELECT d.Loc FROM Departamento d WHERE lower(d.Dnombre) LIKE lower(:name)");
                     query.SetParameter("name", name);
-                    deps = query.List<Departamento>();
+                    deps = query.List<string>();
                     session.Close();
                 }
                 return deps;

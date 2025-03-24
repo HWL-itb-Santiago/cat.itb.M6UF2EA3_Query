@@ -6,125 +6,16 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Inicialización de las clases de CRUD para gestionar la base de datos
         GeneralCRUD generalCRUD = new();
         DepartamentosCRUD departamentosCRUD = new();
         EmpleadosCRUD empleadosCRUD = new();
 
-        Departamento d1 = new()
-        {
-            Dnombre = "TIC",
-            Loc = "BURGOS",
-        };
-
-        Departamento d2 = new()
-        {
-            Dnombre = "DESARROLLO",
-            Loc = "ALICANTE",
-        };
-
-        Departamento d3 = new()
-        {
-            Dnombre = "INVESTIGACION",
-            Loc = "ALMERIA",
-        };
-
+        // Eliminación y creación de tablas al iniciar la aplicación
         generalCRUD.DeleteTables(["empleados", "departamentos"]);
         generalCRUD.CreateTables();
 
-
-        Empleado e1 = new()
-        {
-            Empno = 800,
-            Apellido = "LOPEZ",
-            Ofici = "EMPLEADO",
-            Dir = 7698,
-            Fechaalt = new DateTime(2017, 12, 31, 5, 10, 20, DateTimeKind.Utc),
-            Salario = 1605d,
-            Comissio = 100,
-            Deptno = d1,
-        };
-
-        Empleado e2 = new()
-        {
-            Empno = 801,
-            Apellido = "GUILLERMO",
-            Ofici = "EMPLEADO",
-            Dir = 7647,
-            Fechaalt = new DateTime(2017, 11, 18, 5, 20, 00, DateTimeKind.Utc),
-            Salario = 1741d,
-            Comissio = null,
-            Deptno = d2,
-        };
-
-        Empleado e3 = new()
-        {
-            Empno = 801,
-            Apellido = "FERNANDEZ",
-            Ofici = "VENDEDOR",
-            Dir = 7447,
-            Fechaalt = new DateTime(2018, 11, 18, 5, 20, 00, DateTimeKind.Utc),
-            Salario = 2500d,
-            Comissio = null,
-            Deptno = d3,
-        };
-
-
-
-
-
-        //var listSalariEmps = empleadosCRUD.SelectBySalariRangeCriteria(2000);
-        //foreach (var emp in listSalariEmps)
-        //{
-        //    var salario = emp.Salario;
-        //    var apellido = emp.Apellido;
-        //    Console.WriteLine($"{apellido, -10} {salario}");
-        //}
-
-        //var departamentos = departamentosCRUD.SelectLocByNameHQL("VENTAS");
-
-        //if (departamentos.Count > 0)
-        //{
-        //    foreach (var dep in departamentos)
-        //    {
-        //        Console.WriteLine($"Departamento: {dep.Dnombre}, Localización: {dep.Loc}");
-        //    }
-        //}
-        //else
-        //{
-        //    Console.WriteLine("No se encontraron departamentos en esa localización.");
-        //}
-
-        //var empOfici = empleadosCRUD.SelectByOficiQueryOver("vendedor");
-        //foreach (var item in empOfici)
-        //{
-        //    Console.WriteLine($"{item.Apellido, -8} {item.Salario, -10}");
-        //}
-
-        //var empFilterHQL = empleadosCRUD.SelectByLastNameHQL("S");
-        //foreach (var emp in empFilterHQL)
-        //{
-        //    Console.WriteLine($"Oficio: {emp[0]}, Apellido: {emp[1]}, Salario: {emp[2]}");
-        //}
-
-        //var depsLoc = departamentosCRUD.SelectByLocQueryOver("Sevilla", "Barcelona");
-        //foreach (var dep in depsLoc)
-        //    { Console.WriteLine(dep.Dnombre); }
-
-        //var orderEmps = empleadosCRUD.SelectBySalariRangeQueryOver(3500, 2000);
-        //foreach (var emp in orderEmps)
-        //{
-        //    Console.WriteLine($"{emp,-5}");
-        //}
-
-        //var empsalari1400 = empleadosCRUD.SelectByOficiAndSalariQueryOver("EMPLEADO", 1400);
-        //foreach (var emp in empsalari1400)
-        //    Console.WriteLine(emp[0]);
-
-        //var emp = empleadosCRUD.SelectByMaxSalari();
-        //foreach (var empleado in emp)
-        //    Console.WriteLine($"{empleado[0], -10} {empleado[1], -10} {empleado[2], -10}");
-
-
+        //Menu principal de la aplicación donde se muestra los 10 ejercicios de la practica de NHibernate querys
         int option = 0;
         while (option != -1)
         {
@@ -141,9 +32,7 @@ class Program
             Console.WriteLine("8.-  Mostra els cognoms i els salaris dels empleats que el seu ofici sigui EMPLEADO i cobrin més de 1400.\r\n\tutilitzant QueryOver.");
             Console.WriteLine("9.-  Mostra el cognom, l’ofici i el salari de l’empleat que tingui el salari més alt utilitzant les Subqueries del\r\n\tQueryOver.");
             Console.WriteLine("R -  Restaura");
-            //Console.WriteLine("0 - Create Tables");
             Console.WriteLine("Ingrese la opcion a desear: ");
-            // Correct input reading
             string? input = Console.ReadLine();
             if (input == "r" || input == "R")
             {
@@ -179,9 +68,18 @@ class Program
                     {
                         Console.Clear();
                         var listemps = empleadosCRUD.SelectAllCriteria();
+                        string empId = "ID";
+                        string empApellido = "Apellido";
+                        string empOficio = "Oficio";
+                        string empDir = "Dir";
+                        string empFecha = "Fecha";
+                        string empSalario = "Salario";
+                        string empComision = "Comision";
+                        string empDeptno = "Deptno";
+                        Console.WriteLine($"{empId, -10} {empApellido, -15} {empOficio, -10} {empDir, -10} {empFecha, -20} {empSalario, -10} {empComision, -10} {empDeptno, -10}");
                         foreach (var emp in listemps)
                         {
-                            Console.WriteLine(emp.Apellido);
+                            Console.WriteLine($"{emp.Id,-10} {emp.Apellido,-15} {emp.Ofici,-10} {(emp.Dir != null ? emp.Dir : "N/A"),-10} {emp.Fechaalt,-20} {emp.Salario, -10} {(emp.Comissio != null ? emp.Comissio : "N/A"), -10} {emp.Deptno.Id, -10}");
                         }
                         Console.ReadLine();
                         break;
@@ -189,49 +87,118 @@ class Program
                 case 2:
                     {
                         Console.Clear();
-
+                        var listSalariEmps = empleadosCRUD.SelectBySalariRangeCriteria(2000);
+                        string apellido = "APELLIDO";
+                        string salario = "SALARIO";
+                        Console.WriteLine($"{apellido,-20} {salario}");
+                        foreach (var emp in listSalariEmps)
+                        {
+                            Console.WriteLine($"{emp[0],-20} {emp[1], -20}");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 3:
                     {
                         Console.Clear();
+                        string depto = "ventas";
+                        var departamentos = departamentosCRUD.SelectLocByNameHQL(depto);
 
+                        if (departamentos != null && departamentos.Count > 0)
+                        {
+                            foreach (var dep in departamentos)
+                            {
+                                Console.WriteLine($"Departamento: {depto}, Localización: {dep}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No se encontraron departamentos en esa localización.");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 4:
                     {
                         Console.Clear();
-
+                        var empOfici = empleadosCRUD.SelectByOficiQueryOver("vendedor");
+                        string empId = "ID";
+                        string empApellido = "Apellido";
+                        string empOficio = "Oficio";
+                        string empDir = "Dir";
+                        string empFecha = "Fecha";
+                        string empSalario = "Salario";
+                        string empComision = "Comision";
+                        string empDeptno = "Deptno";
+                        Console.WriteLine($"{empId,-10} {empApellido,-15} {empOficio,-10} {empDir,-10} {empFecha,-20} {empSalario,-10} {empComision,-10} {empDeptno,-10}");
+                        foreach (var emp in empOfici)
+                        {
+                            Console.WriteLine($"{emp.Id,-10} {emp.Apellido,-15} {emp.Ofici,-10} {(emp.Dir != null ? emp.Dir : "N/A"),-10} {emp.Fechaalt,-20} {emp.Salario,-10} {(emp.Comissio != null ? emp.Comissio : "N/A"),-10} {emp.Deptno.Id,-10}");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 5:
                     {
                         Console.Clear();
-
+                        var empFilterHQL = empleadosCRUD.SelectByLastNameHQL("S");
+                        foreach (var emp in empFilterHQL)
+                        {
+                            Console.WriteLine($"Oficio: {emp[0]}, Apellido: {emp[1]}, Salario: {emp[2]}");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 6:
                     {
                         Console.Clear();
-
+                        string depId = "ID";
+                        string depNombre = "DepNombre";
+                        string depLoc = "Loc";
+                        Console.WriteLine($"{depId,-10} {depNombre,-20} {depLoc,-10}");
+                        var depsLoc = departamentosCRUD.SelectByLocQueryOver("Sevilla", "Barcelona");
+                        foreach (var dep in depsLoc)
+                        {
+                            Console.WriteLine($"{dep.Id,-10} {dep.Dnombre,-20} {dep.Loc,-10}");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 7:
                     {
                         Console.Clear();
-
+                        var orderEmps = empleadosCRUD.SelectBySalariRangeQueryOver(3500, 2000);
+                        foreach (var emp in orderEmps)
+                        {
+                            Console.WriteLine($"{emp,-5}");
+                        }
                         Console.ReadLine();
                         break;
                     }
                 case 8:
                     {
                         Console.Clear();
-
+                        var empsalari1400 = empleadosCRUD.SelectByOficiAndSalariQueryOver("EMPLEADO", 1400);
+                        string apellido = "APELLIDO";
+                        string salario = "SALARIO";
+                        Console.WriteLine($"{apellido,-20} {salario,-10}");
+                        foreach (var emp in empsalari1400)
+                        {
+                            Console.WriteLine($"{emp[0], -20} {emp[1],-10}");
+                        }
+                        Console.ReadLine();
+                        break;
+                    }
+                case 9:
+                    {
+                        Console.Clear();
+                        var emp = empleadosCRUD.SelectByMaxSalari();
+                        string apellido = "APELLIDO";
+                        string oficio = "OFICIO";
+                        string salario = "SALARIO";
+                        Console.WriteLine($"{apellido, -20} {oficio, -20} {salario}");
+                        foreach (var empleado in emp)
+                            Console.WriteLine($"{empleado[0],-20} {empleado[1],-20} {empleado[2],-10}");
                         Console.ReadLine();
                         break;
                     }

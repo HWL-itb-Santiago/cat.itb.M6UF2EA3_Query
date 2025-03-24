@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.Map
 {
+    //Mapeo de la clas empleado
     public class EmpleadoMAP : ClassMap<Empleado>
     {
         public EmpleadoMAP()
@@ -22,6 +23,7 @@ namespace cat.itb.M6UF2EA3.Map
             Map(x => x.Fechaalt).Column("fechaalt");
             Map(x => x.Salario).Column("salario");
             Map(x => x.Comissio).Column("comision");
+            //Llave foránea hacia departamento
             References(x => x.Deptno)
                 .Column("deptno")
                 .Not.LazyLoad()

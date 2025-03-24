@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.CRUD
 {
+    //Clase CRUD de empleados con Select, Update, Insert y Delete
     public class EmpleadosCRUD
     {
         public void Delete(Empleado empleado)
@@ -84,7 +85,7 @@ namespace cat.itb.M6UF2EA3.CRUD
                 IList<object[]> empleados;
                 using (var session = SessionFactoryCloud.Open())
                 {
-                    IQuery query = session.CreateQuery("SELECT d.Ofici, d.Apellido, d.Salario FROM Empleado d WHERE d.Apellido LIKE :apellido");
+                    IQuery query = session.CreateQuery("SELECT d.Ofici, d.Apellido, d.Salario FROM Empleado d WHERE lower(d.Apellido) LIKE lower(:apellido)");
                     query.SetParameter("apellido", lastName + "%");
                     empleados = query.List<object[]>();
                     session.Close();
@@ -224,16 +225,19 @@ namespace cat.itb.M6UF2EA3.CRUD
 
         }
 
-        public IList<Empleado>? SelectBySalariRangeCriteria(double range)
+        public IList<object[]>? SelectBySalariRangeCriteria(double range)
         {
             try
             {
-                IList<Empleado> empleados;
+                IList<object[]> empleados;
                 using (var session = SessionFactoryCloud.Open() )
                 {
                     empleados = session.CreateCriteria<Empleado>()
                         .Add(Restrictions.Gt("Salario", range))
-                        .List<Empleado>();
+                        .SetProjection(Projections.ProjectionList()
+                            .Add(Projections.Property("Apellido"))
+                            .Add(Projections.Property("Salario")))
+                        .List<object[]>();
                     session.Close();
                 }
                 return empleados;

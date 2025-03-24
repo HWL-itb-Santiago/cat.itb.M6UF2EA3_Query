@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 
 namespace cat.itb.M6UF2EA3.CRUD
 {
+    //CRUD General que contiene los metodos para la creacion y eliminación de las tablas
     public class GeneralCRUD
     {
+        //Script necesario para crear las tablas de la base de datos
         public void CreateTables()
         {
             try
             {
+                //ruta donde se encuentra el sql script
                 string sqlPath = "../../../hr2.sql";
                 if (!File.Exists(sqlPath))
                 {
@@ -23,7 +26,7 @@ namespace cat.itb.M6UF2EA3.CRUD
                 string creationCommand = "";
                 StreamReader sr = new(sqlPath);
                 creationCommand = sr.ReadToEnd();
-
+                //creacion de la conexion con la base de datos
                 CloudConnection db = new();
                 using NpgsqlConnection conn = db.GetConnection();
                 using var cmd = new NpgsqlCommand(creationCommand, conn);
@@ -35,11 +38,12 @@ namespace cat.itb.M6UF2EA3.CRUD
                 Console.WriteLine(ex.Message);
             }
         }
-
+        //script con el que se eliminan la informacion de las tablas
         public void DeleteTables(List<string> tablas)
         {
             try
             {
+                //creacion de la conexion con la base de datos
                 CloudConnection db = new();
                 using NpgsqlConnection conn = db.GetConnection();
                 foreach (string tab in tablas)
@@ -49,7 +53,7 @@ namespace cat.itb.M6UF2EA3.CRUD
                         Console.WriteLine($"Nombre de tabla inválido: {tab}");
                         continue;
                     }
-
+                    //elimina cada tabla si existe
                     var sql = $"DROP TABLE IF EXISTS {tab} CASCADE";
                     using var cmd = new NpgsqlCommand(sql, conn);
                     cmd.ExecuteNonQuery();
@@ -63,7 +67,7 @@ namespace cat.itb.M6UF2EA3.CRUD
                 Console.WriteLine(ex.Message);
             }
         }
-
+        //validacion del nombre de las tablas
         private bool IsValidTableName(string tableName)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(tableName, @"^[a-zA-Z0-9_]+$");
